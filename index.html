@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="teachers">
+<head>
+    <meta charset="UTF-8">
+    <title>Преподаватели ГрГУ</title>
+
+    <!-- CSS -->
+    <!-- load Bootstrap and custom style.css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JS -->
+    <!-- load Angular, Firebase, Firebase Angular Library, and custom app.js -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+
+<div class="container" ng-controller="mainController">
+  <h2>Преподаватели</h2>
+  <p>Список преподавателей ГрГУ им. Янки Купалы.</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ФИО</th>
+        <th>Должность</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="teacher in teachers">
+        <td>{{ teacher.surname }} {{ teacher.name }} {{ teacher.patronym }}</td>
+        <td>{{ teacher.post }}</td>
+        <td><a href="mailto:{{ teacher.email" }}">{{ teacher.email | lowercase }}</a> <span ng-if="teacher.email ==''">Уточняйте</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
