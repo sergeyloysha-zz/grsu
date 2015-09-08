@@ -10,5 +10,12 @@ angular.module('teachers', [])
 			console.log($scope.teachers)
 	}, function(response) {
 	});
+
+	$scope.predicate = '';
+	$scope.reverse = false;
+	$scope.order = function(predicate) {
+		$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+		$scope.predicate = predicate;
+	};
   
 }]);
