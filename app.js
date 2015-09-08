@@ -4,7 +4,7 @@ angular.module('teachers', [])
 .controller('mainController', ['$scope', '$http', function($scope, $http) {
   
   // our application code will go here
-	$http.get('teachers.json').
+	$http.get('api.grsu.by/1.x/app1/getTeachers?extended=true').
 		then(function(response) {
 			$scope.teachers = response.data.items
 			console.log($scope.teachers)
