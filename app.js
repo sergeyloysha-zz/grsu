@@ -1,8 +1,8 @@
 var grsuControllers = angular.module('grsuControllers', []);
 
-grsuControllers.controller('TeachersCtrl', ['$scope', '$http', function($scope, $http) {
+grsuControllers.controller('TeachersCtrl', ['$scope', '$http', 'API', function($scope, $http, API) {
 
-	$http.get('http://api.grsu.by/1.x/app1/getTeachers?extended=true').success(function(data) {
+	$http.get(API.GET.TEACHERS).success(function(data) {
 		$scope.teachers = data.items;
     });
 
@@ -15,11 +15,11 @@ grsuControllers.controller('TeachersCtrl', ['$scope', '$http', function($scope, 
 
 }]);
 
-grsuControllers.controller('ScheduleCtrl', ['$scope', '$http', function($scope, $http) {
+grsuControllers.controller('ScheduleCtrl', ['$scope', '$http', 'API', function($scope, $http, API) {
 
-	$scope.faculties = [];
-	$scope.departments = [];
-	$scope.cources = [
+	$scope.faculties = undefined;
+	$scope.departments = undefined;
+	$scope.courses = [
 		{"id": 1, "title": "1 курс"},
 		{"id": 2, "title": "2 курс"},
 		{"id": 3, "title": "3 курс"},
@@ -30,12 +30,12 @@ grsuControllers.controller('ScheduleCtrl', ['$scope', '$http', function($scope, 
 	$scope.groups = [];
 	$scope.schedule = [];
 
-	$http.get('http://api.grsu.by/1.x/app1/getFaculties').success(function(data) {
-		$scope.faculties = data.items;
+	$http.get(API.GET.FACULTIES).success(function(response) {
+		$scope.faculties = response.items;
 	});
 
-	$http.get('http://api.grsu.by/1.x/app1/getDepartments').success(function(data) {
-		$scope.departments = data.items;
+	$http.get(API.GET.DEPARTMENTS).success(function(response) {
+		$scope.departments = response.items;
 	});
 
 	$scope.updateGroups = function() {
@@ -44,11 +44,14 @@ grsuControllers.controller('ScheduleCtrl', ['$scope', '$http', function($scope, 
 
 		faculty = $scope.selectedFaculty;
 		department = $scope.selectedDepartment;
-		course = $scope.selectedCource;
+		course = $scope.selectedCourse;
 
-		$http.get('http://api.grsu.by/1.x/app1/getGroups?facultyId='+ faculty +'&departmentId='+ department +'&course='+ course +'').success(function(data) {
-			$scope.groups = data.items;
-		});
+		if(faculty != undefined && department != undefined && course != undefined) {
+			$http.get(API.GET.GROUPS + '?facultyId='+ faculty +'&departmentId='+ department +'&course='+ course).success(function(data) {
+				$scope.groups = data.items;
+			});
+		}
+
 	}
 
 	$scope.showSchedule = function() {
@@ -56,9 +59,11 @@ grsuControllers.controller('ScheduleCtrl', ['$scope', '$http', function($scope, 
 
 		group = $scope.selectedGroup;
 
-		$http.get('http://api.grsu.by/1.x/app1/getGroupSchedule?groupId='+ group +'').success(function(data) {
+		$http.get(API.GET.GROUPSCHEDULE + '?groupId=' + group).success(function(data) {
 			$scope.schedule = data;
 		});
+
+		$scope.show = true;
 	}
 
 }]);
@@ -67,6 +72,23 @@ var grsuApp = angular.module('grsuApp', [
   'ngRoute',
   'grsuControllers'
 ]);
+
+grsuApp.constant('API', (function() {
+
+	var resource = 'http://api.grsu.by/1.x/app1';
+
+	return {
+		ROOT: resource,
+		GET: {
+			FACULTIES: resource + '/getFaculties',
+			DEPARTMENTS: resource + '/getDepartments',
+			GROUPS: resource + '/getGroups',
+			GROUPSCHEDULE: resource + '/getGroupSchedule',
+			TEACHERS: resource + '/getTeachers?extended=true'
+		},
+		BASIC_INFO: resource + '/api/info'
+	}
+})());
 
 grsuApp.config(['$routeProvider',
 	function($routeProvider) {
