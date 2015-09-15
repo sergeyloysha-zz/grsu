@@ -20,11 +20,11 @@ grsuControllers.controller('ScheduleCtrl', ['$scope', '$http', 'API', function($
 	$scope.faculties = undefined;
 	$scope.departments = undefined;
 	$scope.courses = [
-		{"id": 1, "title": "1 курс"},
-		{"id": 2, "title": "2 курс"},
-		{"id": 3, "title": "3 курс"},
-		{"id": 4, "title": "4 курс"},
-		{"id": 5, "title": "5 курс"},
+		{"id": 1, "title": "1"},
+		{"id": 2, "title": "2"},
+		{"id": 3, "title": "3"},
+		{"id": 4, "title": "4"},
+		{"id": 5, "title": "5"},
 		{"id": 6, "title": "6 курс"}
 	];
 	$scope.groups = [];
@@ -40,7 +40,7 @@ grsuControllers.controller('ScheduleCtrl', ['$scope', '$http', 'API', function($
 
 	$scope.updateGroups = function() {
 
-		console.log('Факультет: ' + $scope.selectedFaculty + '\nФорма: ' + $scope.selectedDepartment + '\nКурс: ' + $scope.selectedCource);
+		console.log('Факультет: ' + $scope.selectedFaculty + '\nФорма: ' + $scope.selectedDepartment + '\nКурс: ' + $scope.selectedCourse);
 
 		faculty = $scope.selectedFaculty;
 		department = $scope.selectedDepartment;
@@ -95,13 +95,22 @@ grsuApp.config(['$routeProvider',
 	$routeProvider.
 	when('/teachers', {
 		templateUrl: 'partials/teachers.html',
-		controller: 'TeachersCtrl'
+		controller: 'TeachersCtrl',
+		title: 'Преподаватели'
 	}).
 	when('/schedule', {
 		templateUrl: 'partials/schedule.html',
-		controller: 'ScheduleCtrl'
+		controller: 'ScheduleCtrl',
+		title: 'Расписание'
 	}).
 	otherwise({
 		redirectTo: '/teachers'
+	});
+}]);
+
+grsuApp.run(['$rootScope',
+	function($rootScope) {
+	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute) {
+		$rootScope.title = currentRoute.title;
 	});
 }]);

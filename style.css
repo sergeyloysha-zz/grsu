@@ -1,4 +1,18 @@
-.caret.reverse {
-	border-top-width: 0;
-	border-bottom: 4px solid #000000;
+/* Base
+ ========================================================================== */
+
+html {
+    overflow-y: scroll;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * Navbar
+ */
+
+.tm-navbar {
+    padding: 15px 0;
+    border: none;
+    background: #fff;
 }

@@ -1,41 +1,31 @@
-<div class="form">
-	<div class="form-group">
-		<select class="form-control" ng-model="selectedFaculty" ng-change="updateGroups()">
+<div class="tm-filter">
+<form class="uk-form">
+
+    <fieldset>
+        <select ng-model="selectedFaculty" ng-change="updateGroups()">
 			<option ng-repeat="faculty in faculties" value="{{faculty.id}}">{{ faculty.title }}</option>
 		</select>
-	</div>
-
-	<div class="form-group">
-		<select class="form-control" ng-model="selectedDepartment" ng-change="updateGroups()">
+		<select ng-model="selectedDepartment" ng-change="updateGroups()">
 			<option ng-repeat="department in departments" value="{{department.id}}">{{ department.title }}</option>
 		</select>
-	</div>
 
-	<div class="form-group">
-		<select class="form-control" ng-model="selectedCourse" ng-change="updateGroups()">
-			<option ng-repeat="course in courses" value="{{course.id}}">{{ course.title }}</option>
-		</select>
-	</div>
+		<span ng-repeat="course in courses">
+			<input name="course" ng-model="$parent.selectedCourse" value="{{ course.id }}" ng-change="updateGroups()" type="radio">{{ course.title }}
+		</span>
 
-	<div class="form-group">
-		<select class="form-control" ng-model="selectedGroup" ng-disabled="groups.length == 0">
+		<select ng-model="selectedGroup" ng-disabled="groups.length == 0">
 			<option ng-repeat="group in groups" value="{{group.id}}">{{ group.title }}</option>
 		</select>
-	</div>
 
-	<!--<div class="form-group">
-		<select class="form-control">
-			<option value="" selected>Дата</option>
-			<option ng-repeat="date in dates" value="{{date.id}}">{{ date.title }}</option>
-		</select>
-	</div>-->
-	<input type="submit" class="btn btn-primary" value="Показать" ng-click="showSchedule()" ng-disabled="groups.length == 0 || selectedGroup == undefined">
-</div>
+		<input type="submit" class="btn btn-primary" value="Показать" ng-click="showSchedule()" ng-disabled="groups.length == 0 || selectedGroup == undefined">
+    </fieldset>
+
+</form>
 
 <div ng-if="show == true">
 	<div class="day" ng-repeat="day in schedule.days">
 		<h2>{{ day.date }}</h2>
-		<table class="table">
+		<table class="uk-table">
 			<thead>
 			<tr>
 				<th>Время</th>
@@ -54,4 +44,5 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </div>
